@@ -1,6 +1,7 @@
 #include <pros/misc.hpp>
 #include <pros/motors.hpp>
 #include <pros/rtos.hpp>
+#include <pros.adi.hpp>
 #include "main.hpp"
 
 void initialize() {}
@@ -12,7 +13,7 @@ static pros::Controller controller (pros::E_CONTROLLER_controller);
 static constexpr double dampening = 1.0 / 3.0;
 
 int32_t motor_power(pros::controller_analog_e_t channel) {
-	int32_t raw_input = controller.get_analog(channel)
+	int32_t raw_input = controller.get_analog(channel);
 	double input = raw_input / 100.0;
 	return (int32_t)(input * input * input * 127.0 * dampening);
 }
@@ -37,9 +38,9 @@ void opcontrol() {
 		auto const strafe_axis = motor_power(pros::E_CONTROLLER_ANALOG_LEFT_X);
 		auto const rotate_axis = motor_power(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 		left_front.set_value(forward_axis + strafe_axis + rotate_axis);
-		right_front.set_value(-1*(forward_axis - strafe_axis - rotate_axis)); //Inversed
+		right_front.set_value(-(forward_axis - strafe_axis - rotate_axis)); //Inversed
 		left_back.set_value(forward_axis - strafe_axis + rotate_axis);
-		right_back.set_value(-1*(forward_axis + strafe_axis - rotate_axis)); //Inversed
+		right_back.set_value(-(forward_axis + strafe_axis - rotate_axis)); //Inversed
 
 		//Move robot arm
 		if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
