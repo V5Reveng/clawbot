@@ -1,7 +1,7 @@
 #include <pros/misc.hpp>
 #include <pros/motors.hpp>
 #include <pros/rtos.hpp>
-#include <pros.adi.hpp>
+#include <pros/adi.hpp>
 #include "main.hpp"
 
 void initialize() {}
@@ -9,7 +9,7 @@ void disabled() {}
 void competition_initialize() {}
 void autonomous() {}
 
-static pros::Controller controller (pros::E_CONTROLLER_controller);
+static pros::Controller controller (pros::E_CONTROLLER_MASTER);
 static constexpr double dampening = 1.0 / 3.0;
 
 int32_t motor_power(pros::controller_analog_e_t channel) {
@@ -28,9 +28,9 @@ void opcontrol() {
 	pros::ADIMotor right_back (4);
 
 	//V5 motors for the robot arm
-	pros:Motor arm_lift (1);
-	pros:Motor claw_lift (2);
-	pros:Motor claw_clamp (3);
+	pros::Motor arm_lift (1);
+	pros::Motor claw_lift (2);
+	pros::Motor claw_clamp (3);
 
 	while (true) {
 		//Move robot base
